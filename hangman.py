@@ -1,6 +1,9 @@
+import random
 
-    
-
+def chooseWord(word_list):
+    word = random.choice(word_list)
+    return word
+  
 def showHangman(tries):
     hang_level = [
     ### 10 errors
@@ -119,6 +122,7 @@ def showHangman(tries):
     
     return hang_level[tries]
 
-for i in range(9, -1, -1):
-    print(i)
-    print(showHangman(i))
+
+wordList = ["Hangman", "HangedMan"]
+
+print(chooseWord(wordList))
