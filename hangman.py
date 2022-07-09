@@ -1,7 +1,8 @@
 import random
+from words import list_of_words
 
-def chooseWord(word_list):
-    word = random.choice(word_list)
+def randomWord():
+    word = random.choice(list_of_words)
     return word.upper()
 
 def playHangman(word):
@@ -11,13 +12,13 @@ def playHangman(word):
    guessed_words = []
    guessed_letters = []
    
-   print("Welcome to Hangman!")
    print("The word is " + str(len(word)) + " letters long.")
    print(showHangman(tries))
    print(word_line)
    print("\n")
    while not guessed and tries > 0:
       guess = input("Guess a letter or a word: ").upper() 
+      print("\n")
       if len(guess) == 1 and guess.isalpha():    
             
          if guess in guessed_letters:
@@ -28,6 +29,7 @@ def playHangman(word):
             guessed_letters.append(guess)
          else:
             print("Good guess! " + guess + " is in the word!")
+            guessed_letters.append(guess)
             
             for index, letter in enumerate(word):
                if letter == guess:
@@ -35,6 +37,9 @@ def playHangman(word):
                      word_line = word_line[:index] + guess + word_line[index + 1:]
                   else:
                      word_line = word_line[:-1] + guess
+                     
+            if "_" not in word_line:
+               guessed = True
             
       elif len(guess) == len(word) and guess.isalpha():
          if guess in guessed_words:
@@ -45,7 +50,7 @@ def playHangman(word):
             guessed_words.append(guess)
          else:
             print("Good guess! " + guess + " is the word!")
-            guess = True
+            guessed = True
             word_line = word
             
       else:
@@ -54,12 +59,13 @@ def playHangman(word):
       print(word_line)
       print("\n")
       print("Guessed letters: " + str(guessed_letters))     
-      print("Guessed words: " + str(guessed_words))
+      print("Guessed words: " + str(guessed_words) + "\n")
             
-         
-   
-   return None
-   
+   if guessed:
+      print("Good job you guessed the word!")
+   else:
+      print("You got the man hanged, the word was: " + word)
+      
 
 def showHangman(tries):
     hang_level = [
@@ -180,8 +186,16 @@ def showHangman(tries):
     return hang_level[tries]
 
 
-wordList = ["Hangman"]
 
-# print(chooseWord(wordList))
-# print(showHangman(0))
-playHangman(chooseWord(wordList))
+def main():
+      print("Welcome to Hangman. Let's play!")
+      word = randomWord()
+      playHangman(word)
+      
+      while input("Play again? (y/n): ").upper() == "Y":
+         word = randomWord()
+         playHangman(word)
+
+
+if __name__ == "__main__":
+   main()
